@@ -19,7 +19,7 @@ def index(request):
     # add this first - return HttpResponse("HELLO WORLD")
 
 class AlbumListView(views.APIView):
-    def get(self, request):
+    def get(self, _request):
         albums = Album.objects.all()
         serialized_albums = AlbumSerializer(albums, many=True)
         return response.Response(serialized_albums.data, status=status.HTTP_200_OK)
@@ -40,12 +40,12 @@ class AlbumDetailView(views.APIView):
         except Album.DoesNotExist:
             raise exceptions.NotFound(detail="Album does not exist")
 
-    def get(self, request, id):
+    def get(self, _request, id):
         album = self.get_album_by_id(id)
         serialized_album = AlbumSerializer(album)
         return response.Response(serialized_album.data, status=status.HTTP_200_OK)
 
-    def delete(self, request, id):
+    def delete(self, _request, id):
         album = self.get_album_by_id(id)
         album.delete()
         return response.Response(status=status.HTTP_204_NO_CONTENT)
