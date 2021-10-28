@@ -3,7 +3,7 @@ from django.http import HttpResponse
 
 from rest_framework import views, response, status, exceptions
 
-from albums.serializers import AlbumSerializer
+from .serializers import AlbumSerializer
 from .models import Album
 
 # Create your views here.
@@ -19,9 +19,9 @@ def index(request):
     # add this first - return HttpResponse("HELLO WORLD")
 
 class AlbumListView(views.APIView):
-    def get(self, _request):
+    def get(self, request):
         albums = Album.objects.all()
-        serialized_albums = AlbumSerializer(albums, many=True)
+        serialized_albums = AlbumSerializer(albums, many=True, context={"request": request})
         return response.Response(serialized_albums.data, status=status.HTTP_200_OK)
 
     def post(self, request):
